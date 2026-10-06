@@ -2,7 +2,7 @@ import Image from "next/image";
 import InteractiveCard from "./InteractiveCard";
 import { Rating } from '@mui/material';
 
-export default function EventCard ({venueName, imgSrc, rating, onRatingChange} : {venueName:string, imgSrc:string, rating:number, onRatingChange:(venueName:string, rating:number)=>void}) {
+export default function EventCard ({venueName, imgSrc, rating, onRatingChange} : {venueName:string, imgSrc:string, rating?:number, onRatingChange?:(venueName:string, rating:number)=>void}) {
 
   return(
     <InteractiveCard>
@@ -11,16 +11,19 @@ export default function EventCard ({venueName, imgSrc, rating, onRatingChange} :
       </div>
       <div className='w-full h-[30%] p-2.5 flex flex-col gap-1'>
         <div>{venueName}</div>
-        <div onClick={(e)=> e.stopPropagation()}>
+        { rating !== undefined && onRatingChange ?
+          <div onClick={(e)=> e.stopPropagation()}>
           <Rating 
             id={`${venueName} Rating`} 
             name={`${venueName} Rating`} 
             data-testid={`${venueName} Rating`}
             value={rating}
-            onChange={(event, newValue) => onRatingChange(venueName, newValue ?? 0)}
+            onChange={(event, newValue) => onRatingChange?.(venueName, newValue ?? 0)}
           />
-        </div>
+        </div>:''
+        }
         
+      
       </div>
     </InteractiveCard>
 
